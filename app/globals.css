@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+/* Class-based dark mode: add .dark to <html> to enable */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Light theme (default when .dark is not on html) */
+:root {
+  --font-ui: "Times New Roman", Times, Georgia, serif;
+  --background: #f8fafc;
+  --background-end: #e2e8f0;
+  --foreground: #1e293b;
+  --foreground-muted: #64748b;
+  --accent: #2563eb;
+  --muted: #64748b;
+  --border: #cbd5e1;
+  --sidebar-bg: rgba(248, 250, 252, 0.9);
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --grid-line: rgba(30, 64, 175, 0.08);
+  --scan-line-color: rgba(30, 64, 175, 0.06);
+  --corner-accent: rgba(30, 64, 175, 0.2);
+  --corner-accent-shadow: rgba(30, 64, 175, 0.06);
+}
+
+/* Dark theme (when .dark is on html) */
+.dark {
+  --background: #0f172a;
+  --background-end: #111c3a;
+  --foreground: #e2e8f0;
+  --foreground-muted: #94a3b8;
+  --accent: #3b82f6;
+  --muted: #64748b;
+  --border: #334155;
+  --sidebar-bg: rgba(2, 6, 23, 0.85);
+  --card-bg: rgba(15, 23, 42, 0.6);
+  --grid-line: rgba(59, 130, 246, 0.035);
+  --scan-line-color: rgba(59, 130, 246, 0.06);
+  --corner-accent: rgba(59, 130, 246, 0.18);
+  --corner-accent-shadow: rgba(59, 130, 246, 0.08);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --font-sans: "Times New Roman", Times, Georgia, serif;
+  --font-mono: "Times New Roman", Times, Georgia, serif;
+}
+
+/* Global UI font: Times New Roman (Kazakh/Cyrillic-safe), weight 600, letter-spacing */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+}
+
+/* KaTeX: math font unchanged (uses KaTeX's own font); inherit color for light/dark readability */
+.katex,
+.math-renderer-inline .katex,
+.math-renderer-block .katex {
+  font-size: 1.05em;
+  color: inherit;
+}
+
+.math-renderer-inline {
+  display: inline;
+  vertical-align: middle;
+}
+
+/* Larger, well-spaced block math for grade 9–11 questions */
+.math-renderer-block {
+  display: block;
+  margin: 1em 0;           /* more vertical spacing */
+  text-align: center;      /* center equations */
+  overflow-x: auto;
+}
+
+.math-renderer-block .katex {
+  font-size: 1.3em;        /* 1.3x larger block math */
+  line-height: 1.4;
+}
+
+.pai-glow {
+  text-shadow:
+    0 0 20px rgba(59, 130, 246, 0.4),
+    0 0 40px rgba(59, 130, 246, 0.25),
+    0 0 60px rgba(59, 130, 246, 0.15);
+}
+
+.btn-start-glow {
+  box-shadow: 0 0 24px rgba(59, 130, 246, 0.35);
+}
+
+.btn-start-glow:hover {
+  box-shadow: 0 0 32px rgba(59, 130, 246, 0.45), 0 0 48px rgba(59, 130, 246, 0.2);
+}
+
+/* Subtle background grid (theme-aware) */
+.dashboard-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--grid-line), transparent 1px),
+    linear-gradient(90deg, var(--grid-line), transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+
+/* Thin glowing divider */
+.glow-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(59, 130, 246, 0.25) 50%,
+    transparent 100%
+  );
+}
+
+/* Faint scanning line (theme-aware) */
+.scan-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--scan-line-color),
+    transparent
+  );
+  animation: scan 14s linear infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+
+@keyframes scan {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+/* Timer pulse (last 10 seconds) */
+@keyframes timer-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+.timer-pulse {
+  animation: timer-pulse 1s ease-in-out infinite;
+}
+
+/* Corner accent (L-shape, theme-aware) */
+.corner-accent {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--corner-accent);
+  box-shadow: 0 0 12px var(--corner-accent-shadow);
+  pointer-events: none;
+}
+
+.corner-accent-tl {
+  top: 12px;
+  left: 12px;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+
+.corner-accent-tr {
+  top: 12px;
+  right: 12px;
+  border-top: 1px solid;
+  border-right: 1px solid;
+}
+
+.corner-accent-bl {
+  bottom: 12px;
+  left: 12px;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+}
+
+.corner-accent-br {
+  bottom: 12px;
+  right: 12px;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+}
+
+/* Subtle radar-style circular background */
+.radar-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0.12;
+}
+
+.radar-bg::before {
+  content: "";
+  width: min(480px, 70vh);
+  height: min(480px, 70vh);
+  border-radius: 9999px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow:
+    0 0 40px rgba(56, 189, 248, 0.08),
+    0 0 80px rgba(37, 99, 235, 0.06);
+  background:
+    radial-gradient(circle at center, rgba(37, 99, 235, 0.08), transparent 60%),
+    radial-gradient(circle at center, transparent 0, transparent 55%, rgba(148, 163, 184, 0.2) 56%, transparent 65%);
+  animation: radar-rotate 40s linear infinite;
+}
+
+@keyframes radar-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
